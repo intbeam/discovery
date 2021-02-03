@@ -17,7 +17,10 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 #define MAIN_HPP
 
 #include <stdio.h>
+#include "rasterizer.hpp"
 #include "pixelwriter.hpp"
+#include "spritemanager.hpp"
+
 
 // main prototype
 int main(int argc, char** argv);

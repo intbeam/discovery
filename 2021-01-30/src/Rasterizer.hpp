@@ -3,6 +3,7 @@
 #define RASTERIZER_HPP
 
 #include "pixelwriter.hpp"
+#include "spritemanager.hpp"
 
 class Rasterizer
 {
@@ -12,6 +13,8 @@ class Rasterizer
     public:
         Rasterizer(PixelWriter &pixel_writer);
         void draw_rectangle(int x, int y, int width, int height, int color);
+        void draw_sprite(int x, int y, Sprite &sprite);
+
 };
 
 #endif

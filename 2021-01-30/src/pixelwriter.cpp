@@ -1,5 +1,10 @@
 #include "pixelwriter.hpp"
 
+void VgaPixelWriter::set_next_line_skip_count(int count)
+{
+    this->next_line_pixel_skip = count;
+}
+
 void VgaPixelWriter::write_pixeldata(int x_origin, int y_origin, const pixel_packet *pixel_operations, int packet_count, int loop_count)
  {
     int opsCounter;
@@ -19,8 +24,6 @@ void VgaPixelWriter::write_pixeldata(int x_origin, int y_origin, const pixel_pac
             switch(opsptr->type)
             {
                 case PACKET_SINGLE_COLOR:
-
-                //printf("type: %d value:%d count:%d", ops->type, ops->value, ops->count);
 
                 __asm {
 
@@ -47,8 +50,6 @@ void VgaPixelWriter::write_pixeldata(int x_origin, int y_origin, const pixel_pac
                 break;
             case PACKET_SOURCE_COPY:
                 
-                //printf("type: %d value:%d count:%d", ops->type, ops->value, ops->count);
-
                 __asm {
 
                     // initialize ES:DI to vga
@@ -73,6 +74,10 @@ void VgaPixelWriter::write_pixeldata(int x_origin, int y_origin, const pixel_pac
             case PACKET_SKIP:
                 
                 break;
+            case PACKET_NEXT_LINE:
+                bytesWritten = this->next_line_pixel_skip;                
+                break;
+
             }
 
             vgaIndex += bytesWritten;
@@ -85,6 +90,8 @@ void VgaPixelWriter::write_pixeldata(int x_origin, int y_origin, const pixel_pac
 
  void VgaPixelWriter::get_surface_dimensions(surface_dimension &dimension)
  {
+     // hardcoded for mode 13
+     
      dimension.width = 320;
      dimension.height = 200;
  }

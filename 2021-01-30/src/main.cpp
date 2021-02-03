@@ -14,48 +14,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
 */
 
 #include "main.hpp"
-#include "rasterizer.hpp"
+
 
 // Application entrypoint
 int main(int argc, char** argv)
 {
     VgaPixelWriter pixelWriter = VgaPixelWriter();    
     Rasterizer rasterizer = Rasterizer(pixelWriter);
-    int i;
-    
-    char testbitmap[] = { 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15, 1, 15 };
-
-    pixel_packet pixelpackets[2] = {
-        {
-            10,
-            1,
-            0,
-            PACKET_SINGLE_COLOR
-        },
-        {
-            20,
-            0,
-            testbitmap,
-            PACKET_SOURCE_COPY
-        }
-    };
+    SpriteManager spriteManager = SpriteManager();
+    Sprite testsprite;
+    int x = 0;    
 
     __asm {
 
         mov ax, 13h
         int 10h
 
-    }
+    }  
 
-    //pixelWriter.write_pixeldata(0, 60, pixelpackets, 2, 1);
+    // Remember to move zillion.tga to the bin directory
+    spriteManager.load_sprite("zillion.tga", 16, 16, testsprite);
 
-    for(i = 0; i < 255; i++)
+
+    for(x = 0; x < 304; x++)
     {
-        rasterizer.draw_rectangle(50, 50, 100, 100, i);
+        //printf("%d", testsprite.packet_count);
+        rasterizer.draw_rectangle(x, 70, 16, 16, 0);
+        rasterizer.draw_sprite(x, 70, testsprite);
     }
-
-    
-
 
     return 0;
 }
